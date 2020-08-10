@@ -1,0 +1,214 @@
+﻿####################################################################################################################
+## THIS SCRIPT CHECKS COMMON MICROSOFT DEFENDER SETTINGS AND PROVIDES RELATED URLS FOR FURTHER INFO               ##
+##                                                                                                                ##       
+## IT WILL OUTPUT RESULTS TO the variable settings you set for $fileoutputdir and $filename as per line 36 and 37 ##
+## This also includes $systemname to uniquely identify each machine log if running in batches                     ##                                                                               
+##                                                                                                                ##                       
+## This script is required to run as admin, to properly test the MAPS connectivity                                ##                     
+## This script gets results via Get-MpComputerStatus cmdlet and Get-MpPreference cmdlet                           ##                       
+##                                                                                                                ##                     
+## V1.0                                                                                                           ##                      
+## Author @lkuik                                                                                                  ##                       
+####################################################################################################################
+
+# The following is a list of items that will be checked and provide Microsoft related URLS for config:
+#    - Is Defender AV enabled?
+#    - Is real-time protection enabled?
+#    - Is Behavior monitoring enabled?
+#    - Is Ioav protection enabled?
+#    - Is On-access protection enabled?
+#    - Is network inspection service enabled?
+#    - Is your defender settings tamper protected?
+#    - Is MAPS enabled to get cloud-delivered protection?
+#    - Is the MAPS setting and sample submission set to basic, or advanced / submit safe samples or all samples
+#    - What block level of cloud protetction do I have enforced?
+#    - Is my machine able to talk to MAPS?
+#    - IS Block at first site enabled? (BAFS)
+#    - Is my signature defintions updating?
+#    - How often are they updating in days?
+#    - How many times are they updating within that day?
+#    - What source are the updates coming from?
+#    - What type of scan is running?
+#    - How often are scans running?
+#    - What time of the day is the scan running?
+
+# Setting log file variables
+$systemname = $env:computername # Grabbing hostname variable so each log file can be uniquely identified by hostname
+$fileoutputdir = "C:\Windows\Temp" # Setting output path for file. This example is local, but you can also set it to network file shares by doing "\\insertpathtoUNChere\directory"
+$filename = "DefenderSettings.txt" # Set the file name and extension
+
+# Set Defender AV Enabled variable and check value to write to file
+$DefenderAVEnabled = Get-MpComputerStatus | Select-Object -ExpandProperty AntispywareEnabled
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV Enabled" >> $fileoutputdir\$systemname$filename                           
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted value can only be true or false, CURRENT VALUE: $DefenderAVEnabled" >> $fileoutputdir\$systemname$filename
+Write-Output "If value false, please see https://docs.microsoft.com/en-us/mem/intune/user-help/turn-on-defender-windows" >> $fileoutputdir\$systemname$filename
+
+# Set Defender Real-time Protection variable and check value to write to file
+$DefenderAVRTP = Get-MpComputerStatus | Select-Object -ExpandProperty RealTimeProtectionEnabled
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER Real-time Protection Enabled" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted value can only be true or false, CURRENT VALUE: $DefenderAVRTP" >> $fileoutputdir\$systemname$filename
+Write-Output "If not enabled, please see https://docs.microsoft.com/en-us/mem/intune/user-help/turn-on-defender-windows or check if you have 3rd party AV enabled, as if another product is controlling Real-time protection Defender will move RTP into passive mode, see here: https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/microsoft-defender-antivirus-compatibility#:~:text=In%20passive%20mode%2C%20you%20can%20still%20manage%20updates,up-to-date%20third-party%20product%20providing%20real-time%20protection%20from%20malware." >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Ioav at variable and check value to write to file
+$DefenderAVIoavProtection = Get-MpComputerStatus | Select-Object -ExpandProperty IoavProtectionEnabled
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV Ioav Enabled" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted value can only be true or false, true indicating it is enabled CURRENT VALUE: $DefenderAVIoavProtection" >> $fileoutputdir\$systemname$filename
+Write-Output "If value true, please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/configure-block-at-first-sight-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Behavior Monitoring variable and check value to write to file
+$DefenderAVBehaviorMonitoring = Get-MpComputerStatus | Select-Object -ExpandProperty BehaviorMonitorEnabled
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV Behavior Monitoring Enabled" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted value can only be true or false,  CURRENT VALUE: $DefenderAVBehaviorMonitoring" >> $fileoutputdir\$systemname$filename
+Write-Output "Please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/configure-block-at-first-sight-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Behavior Monitoring variable and check value to write to file
+$DefenderAVOnAccessProtection = Get-MpComputerStatus | Select-Object -ExpandProperty OnAccessProtectionEnabled
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV On-access Enabled" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted value can only be true or false,  CURRENT VALUE: $DefenderAVOnAccessProtection" >> $fileoutputdir\$systemname$filename
+Write-Output "Please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/configure-block-at-first-sight-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Behavior Monitoring variable and check value to write to file
+$DefenderAVNetworkProtection = Get-MpPreference | Select-Object -ExpandProperty EnableNetworkProtection
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV Network Inspection" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted value can only be 1 (enabled, block mode) 2 (Audit mode), 0 (off) CURRENT VALUE: $DefenderAVNetworkProtection" >> $fileoutputdir\$systemname$filename
+Write-Output "Please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/network-protection" >> $fileoutputdir\$systemname$filename
+
+# Set Tamper protection variable and check value to write to file
+$DefenderAVTP = Get-MpComputerStatus | Select-Object -ExpandProperty IsTamperProtected
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER Tamper Protection" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted value can only be true or false, CURRENT VALUE: $DefenderAVTP" >> $fileoutputdir\$systemname$filename
+Write-Output "If value false, please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/prevent-changes-to-security-settings-with-tamper-protection#:~:text=%20Protect%20security%20settings%20with%20tamper%20protection%20,bigger%20cyberattacks.%20Bad%20actors%20try%20to...%20More%20" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV MAPS variable and check value to write to file
+$DefenderAVMAPS = Get-MpPreference | Select-Object -ExpandProperty MAPSReporting
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER MAPS Enabled" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted values are 0(disabled), 1(basic), 2(advanced) CURRENT VALUE: $DefenderAVMAPS" >> $fileoutputdir\$systemname$filename
+Write-Output "Learn more here: https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/enable-cloud-protection-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV MAPS file submission variable and check value to write to file
+$DefenderAVMAPSfiles = Get-MpPreference | Select-Object -ExpandProperty SubmitSamplesConsent
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER MAPS file submissions" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted values are 0(Always prompt), 1(send safe samples), 2(never send), 3(send all samples) CURRENT VALUE: $DefenderAVMAPSfiles" >> $fileoutputdir\$systemname$filename
+Write-Output "Learn more here: https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/enable-cloud-protection-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Cloud protection level variable and check value to write to file
+$DefenderAVCloudBlockLevel = Get-MpPreference | Select-Object -ExpandProperty CloudBlockLevel
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV CloudBlockLevel" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted values Default (0), Moderate(1), High (2), High+(4), and Zero teolerance(6) are CURRENT VALUE: $DefenderAVCloudBlockLevel" >> $fileoutputdir\$systemname$filename
+Write-Output "Learn more here: https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/specify-cloud-protection-level-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV ability to connect to MAPS variable and check value to write to file
+
+cd "C:\Program Files\Windows Defender"
+$DefenderAVMAPSConnection = .\MpCmdRun.exe -ValidateMapsConnection
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER MAPS Connection" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "CURRENT VALUE: $DefenderAVMAPSConnection" >> $fileoutputdir\$systemname$filename
+Write-Output "Learn more here: https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/configure-network-connections-microsoft-defender-antivirus#validate-connections-between-your-network-and-the-cloud" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Bock at first sight (BAFS) variable and check value to write to file
+$DefenderAVBAFSEnabled = Get-MpPreference | Select-Object -ExpandProperty DisableBlockAtFirstSeen
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV BAFS Disabled" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted value can only be true or false, true indicating it is disabled CURRENT VALUE: $DefenderAVBAFSEnabled" >> $fileoutputdir\$systemname$filename
+Write-Output "If value true, please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/configure-block-at-first-sight-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Signature Last Updated variable and check value to write to file
+$DefenderAVSigRecentlyUpdated = Get-MpComputerStatus | Select-Object -ExpandProperty AntivirusSignatureAge
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV Last Signature Update" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "If updated within last the last day value will show 0, and for every day it hasn't updated the counter will move up from 0 CURRENT VALUE: $DefenderAVSigRecentlyUpdated" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Updating mechanism variable and check value to write to file
+$DefenderAVSigUpdateFrequencyDays = Get-MpPreference| Select-Object -ExpandProperty SignatureScheduleDay
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV SigUpdate Scheduled Check Frequency in days" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted values are Every day(0), 1(Sunday), 2(Monday), 3(Tuesday), 4(Wednesday), 5(Thursday), 6(Friday), 7(Saturday), 8(never) CURRENT VALUE: $DefenderAVSigUpdateFrequencyDays" >> $fileoutputdir\$systemname$filename
+Write-Output "Please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/manage-protection-update-schedule-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Updating mechanism variable and check value to write to file
+$DefenderAVSigUpdateInterval = Get-MpPreference| Select-Object -ExpandProperty SignatureUpdateInterval
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV SigUpdate frequency on day specified" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted values are 1-24 (1 being check every hour, 24 being once a day, and anything other specified between) CURRENT VALUE: $DefenderAVSigUpdateInterval" >> $fileoutputdir\$systemname$filename
+Write-Output "Please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/manage-protection-update-schedule-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender AV Updating mechanism variable and check value to write to file
+
+$DefenderAVUpdateMechanism = Get-MpPreference| Select-Object -ExpandProperty SignatureFallBackOrder
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV Update Mechanism" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "This value will show the priority of mechanism used to deliver AV updates. CURRENT VALUE: $DefenderAVUpdateMechanism" >> $fileoutputdir\$systemname$filename
+Write-Output "Please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/manage-protection-updates-microsoft-defender-antivirus for more information" >> $fileoutputdir\$systemname$filename
+
+# Set Defender Scan variable to see what type of scan is used, and write value to file
+
+$DefenderAVTypeofScan = Get-MpPreference| Select-Object -ExpandProperty ScanParameters
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV Type of Scan" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted values are Quick scan which is default(1), or Full scan(2) CURRENT VALUE: $DefenderAVTypeofScan" >> $fileoutputdir\$systemname$filename
+Write-Output "Please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/scheduled-catch-up-scans-microsoft-defender-antivirus for more information" >> $fileoutputdir\$systemname$filename
+
+# Set Defender Scan variable to see how often scan is run in days and write value to file
+
+$DefenderAVScanFrequency = Get-MpPreference| Select-Object -ExpandProperty ScanScheduleDay
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV Scan frequency in days" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted values are Every day(0), 1(Sunday), 2(Monday), 3(Tuesday), 4(Wednesday), 5(Thursday), 6(Friday), 7(Saturday), 8(never) CURRENT VALUE: $DefenderAVScanFrequency" >> $fileoutputdir\$systemname$filename
+Write-Output "Please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/scheduled-catch-up-scans-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
+
+# Set Defender Scan variable to see how often scan is run in days and write value to file
+
+$DefenderAVScanTime = Get-MpPreference| Select-Object -ExpandProperty ScanScheduleTime
+
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "DEFENDER AV Scan Time" >> $fileoutputdir\$systemname$filename
+Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
+Write-Output "The time value is set as the number of minutes past midnight, so for example 120 value would be 02:00 AM scan. CURRENT VALUE: $DefenderAVScanTime" >> $fileoutputdir\$systemname$filename
+Write-Output "Please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/scheduled-catch-up-scans-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
