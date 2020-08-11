@@ -12,6 +12,10 @@ $filename defines what you want the filename to be called, currently it outputs 
 Write-Output "-------------------------------------------" >> $fileoutputdir\$systemname
 You will want to do CTRL + F most likely in a text editor and replace all the occurences since these variables are frequently called
 
+Lines 10-18 will check if the script is running as admin, if it's not it will log following warning in the log file:
+WARNING! WARNING! WARNING! WARNING! WARNING!
+YOU DID NOT RUN THIS SCRIPT AS ADMINISTRATOR. FOR ACCURATE RESULTS WITH MAPS CONNECTIVITY PLEASE RUN SCRIPT AGAIN AS ADMIN
+
 What settings is the script checking?
 The powershell script uses the get-mppreference and get-mpcomputerstatus cmdlets to check the following:
     - Is Defender AV enabled?
