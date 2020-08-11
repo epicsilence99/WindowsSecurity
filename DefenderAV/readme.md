@@ -1,23 +1,28 @@
-DefenderSettings.ps1 is a powershell script used to check common Defender AV settings on Windows machines.
-This one is particularily designed for Windows 10
+## Purpose
+DefenderAV is a collection of useful powershell scripts relating to Defender AV (local client)
 
-In the default configuration, you can see lines #2-4 sets variables:
+## DefenderSettings.ps1 (Checks common Defender settings, and outputs to a file with Microsoft Related URLS for info/config options)
 
-$systemname uses the environment variable hostname to uniquely identify what machine log this file belongs too
+    In the default configuration, you can see lines #2-4 sets variables, and these can be modified to suit your needs:
 
-$fileoutputdir defines what directory to output this file too. This is a customizable output, by default it logs to "C:\Windows\Temp" directory
-However, you can change the variable to use a network file share, such as $fileoutputdir = "\\insertUNC\directory"
+    $systemname 
+    uses the environment variable hostname to uniquely identify what machine log this file belongs too
 
-$filename defines what you want the filename to be called, currently it outputs the filename as $systemname$filename, but this can also be configured, for example if you have already have a directory that identifies what the script relates too, you can remove the $filename variable such as below:
-Write-Output "-------------------------------------------" >> $fileoutputdir\$systemname
-You will want to do CTRL + F most likely in a text editor and replace all the occurences since these variables are frequently called
+    $fileoutputdir
+    Defines what directory to output this file too. This is a customizable output, by default it logs to "C:\Windows\Temp" directory
+    However, you can change the variable to use a network file share, such as $fileoutputdir = "\\insertUNC\directory"
 
-Lines 10-18 will check if the script is running as admin, if it's not it will log following warning in the log file:
-WARNING! WARNING! WARNING! WARNING! WARNING!
-YOU DID NOT RUN THIS SCRIPT AS ADMINISTRATOR. FOR ACCURATE RESULTS WITH MAPS CONNECTIVITY PLEASE RUN SCRIPT AGAIN AS ADMIN
+    $filename 
+    Defines what you want the filename to be called, currently it outputs the filename as $systemname$filename, but this can also be configured, for example if you have            already have a directory that identifies what the script relates too, you can remove the $filename variable such as below:
+    Write-Output "-------------------------------------------" >> $fileoutputdir\$systemname
+    You will want to do CTRL + F most likely in a text editor and replace all the occurences since these variables are frequently called
 
-What settings is the script checking?
-The powershell script uses the get-mppreference and get-mpcomputerstatus cmdlets to check the following:
+    Lines 10-18 will check if the script is running as admin, if it's not it will log following warning in the beginning of the log file:
+    WARNING! WARNING! WARNING! WARNING! WARNING!
+    YOU DID NOT RUN THIS SCRIPT AS ADMINISTRATOR. FOR ACCURATE RESULTS WITH MAPS CONNECTIVITY PLEASE RUN SCRIPT AGAIN AS ADMIN
+
+    ## What settings is the script checking?
+    The powershell script uses the get-mppreference and get-mpcomputerstatus cmdlets to check the following:
     - Is Defender AV enabled?
     - Is real-time protection enabled?
     - Is Behavior monitoring enabled?
