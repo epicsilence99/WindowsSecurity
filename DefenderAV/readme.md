@@ -13,7 +13,7 @@ DefenderAV is a collection of useful powershell scripts relating to Defender AV 
     However, you can change the variable to use a network file share, such as $fileoutputdir = "\\insertUNC\directory"
 
     $filename 
-    Defines what you want the filename to be called, currently it outputs the filename as $systemname$filename, but this can also be configured, for example if you have            already have a directory that identifies what the script relates too, you can remove the $filename variable such as below:
+    Defines what you want the filename to be called, currently it outputs the filename DefenderSettings.txt as $systemname$filename, but this can also be configured, for         example if you have already have a directory that identifies what the script relates too, you can remove the $filename variable such as below:
     Write-Output "-------------------------------------------" >> $fileoutputdir\$systemname
     You will want to do CTRL + F most likely in a text editor and replace all the occurences since these variables are frequently called
 
