@@ -42,7 +42,7 @@ Write-Output "==================================================================
 Write-Output "DEFENDER AV Ioav Enabled" >> $fileoutputdir\$systemname$filename
 Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
 Write-Output "Accepted value can only be true or false, CURRENT VALUE: $DefenderAVIoavProtection" >> $fileoutputdir\$systemname$filename
-Write-Output "If value false, please see https://docs.microsoft.com/en-us/previous-versions/windows/desktop/defender/msft-mpcomputerstatus >> $fileoutputdir\$systemname$filename
+Write-Output "If value false, please see https://docs.microsoft.com/en-us/previous-versions/windows/desktop/defender/msft-mpcomputerstatus" >> $fileoutputdir\$systemname$filename
 
 # Set Defender AV Behavior Monitoring variable and check value to write to file
 $DefenderAVBehaviorMonitoring = Get-MpComputerStatus | Select-Object -ExpandProperty BehaviorMonitorEnabled
@@ -160,7 +160,7 @@ $DefenderAVSigUpdateInterval = Get-MpPreference| Select-Object -ExpandProperty S
 Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
 Write-Output "DEFENDER AV SigUpdate frequency on day specified" >> $fileoutputdir\$systemname$filename
 Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
-Write-Output "Accepted values can be 1-24 (1 being check every hour, 24 being once a day, and anything other specified between) CURRENT VALUE: $DefenderAVSigUpdateInterval" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted values can be 1 (every hour) through 24 (once a day), CURRENT VALUE: $DefenderAVSigUpdateInterval" >> $fileoutputdir\$systemname$filename
 Write-Output "For more info please see: https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/manage-protection-update-schedule-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
 
 # Set Defender AV Updating mechanism variable and check value to write to file
