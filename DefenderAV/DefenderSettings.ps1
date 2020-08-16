@@ -142,7 +142,7 @@ $DefenderAVSigRecentlyUpdated = Get-MpComputerStatus | Select-Object -ExpandProp
 Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
 Write-Output "DEFENDER AV Last Signature Update" >> $fileoutputdir\$systemname$filename
 Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
-Write-Output "If updated within last the last day value will show 0, and for every day it hasn't updated the counter will move up from 0 CURRENT VALUE: $DefenderAVSigRecentlyUpdated" >> $fileoutputdir\$systemname$filename
+Write-Output "If updated within last the last day value will show 0, and for every day it hasnt updated the counter will move up from 0 CURRENT VALUE: $DefenderAVSigRecentlyUpdated" >> $fileoutputdir\$systemname$filename
 Write-Output "For more info please see: https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/manage-protection-update-schedule-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
 
 # Set Defender AV Updating mechanism variable and check value to write to file
