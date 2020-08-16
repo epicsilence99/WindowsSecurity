@@ -133,7 +133,7 @@ $DefenderAVBAFSDisabled = Get-MpPreference | Select-Object -ExpandProperty Disab
 Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
 Write-Output "DEFENDER AV BAFS Disabled" >> $fileoutputdir\$systemname$filename
 Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
-Write-Output "Accepted value can only be true or false, CURRENT VALUE: $DefenderAVBAFSEnabled" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted value can only be true or false, CURRENT VALUE: $DefenderAVBAFSDisabled" >> $fileoutputdir\$systemname$filename
 Write-Output "If value true, please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-antivirus/configure-block-at-first-sight-microsoft-defender-antivirus" >> $fileoutputdir\$systemname$filename
 
 # Set Defender AV Signature Last Updated variable and check value to write to file
