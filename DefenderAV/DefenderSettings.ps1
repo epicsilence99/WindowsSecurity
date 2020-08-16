@@ -68,7 +68,7 @@ $DefenderAVNetworkProtection = Get-MpPreference | Select-Object -ExpandProperty 
 Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
 Write-Output "DEFENDER AV Network Inspection" >> $fileoutputdir\$systemname$filename
 Write-Output "=========================================================================" >> $fileoutputdir\$systemname$filename
-Write-Output "Accepted values can be 1 (enabled, block mode) 2 (Audit mode), 0 (off) CURRENT VALUE: $DefenderAVNetworkProtection" >> $fileoutputdir\$systemname$filename
+Write-Output "Accepted values can be 1 (enabled block mode) 2 (Audit mode), 0 (off) CURRENT VALUE: $DefenderAVNetworkProtection" >> $fileoutputdir\$systemname$filename
 Write-Output "For more info please see https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/network-protection" >> $fileoutputdir\$systemname$filename
 
 # Set Defender AV Tamper Protection variable and check value to write to file
