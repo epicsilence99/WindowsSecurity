@@ -25,11 +25,12 @@ DefenderAV is a collection of useful powershell scripts relating to Defender AV 
     The powershell script uses the get-mppreference and get-mpcomputerstatus cmdlets to check the following:
     - Is Defender AV enabled?
     - Is real-time protection enabled?
-    - Is Behavior monitoring enabled?
     - Is Ioav protection enabled?
+    - Is Behavior monitoring enabled?    
     - Is On-access protection enabled?
     - Is network inspection service enabled?
     - Is your defender settings tamper protected?
+    - Is PUA enabled?
     - Is MAPS enabled to get cloud-delivered protection?
     - Is the MAPS setting and sample submission set to basic, or advanced / submit safe samples or all samples
     - What block level of cloud protetction do I have enforced?
